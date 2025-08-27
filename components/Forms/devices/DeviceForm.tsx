@@ -17,6 +17,7 @@ interface Props {
 const DEFAULT_VALUES: Device = {
   id: crypto.randomUUID(),
   name: "",
+  description: "",
   type: 0,
   location: "",
   status: {},
@@ -67,6 +68,16 @@ export default function DeviceForm({ deviceValues, loading, onSubmit }: Props) {
             error={!!errors.name}
             helperText={errors.name?.message}
             size="small"
+          />
+
+          <TextField
+            label="Device Description"
+            {...register("description")}
+            error={!!errors.description}
+            helperText={errors.description?.message}
+            size="small"
+            multiline
+            rows={3}
           />
 
           <TextField
