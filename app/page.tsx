@@ -1,12 +1,7 @@
 import { Box, Card, CardContent, Typography, Chip, Grid } from "@mui/material";
-import {
-  DeviceHub,
-  TrendingUp,
-  Security,
-  CloudQueue,
-  Https,
-} from "@mui/icons-material";
+import { TrendingUp, Security, CloudQueue, Https } from "@mui/icons-material";
 import SensorReadings from "@/components/Charts/SensorReadings";
+import DeviceCountCard from "@/components/Homepage/DeviceCountCard";
 
 export default function Dashboard() {
   return (
@@ -17,32 +12,7 @@ export default function Dashboard() {
 
       <Grid container spacing={3}>
         <Grid size={{ xs: 12, md: 6, lg: 3 }}>
-          <Card
-            sx={{
-              bgcolor: "hsl(var(--card))",
-              border: "1px solid hsl(var(--border))",
-              height: "100%",
-            }}
-          >
-            <CardContent>
-              <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
-                <DeviceHub sx={{ color: "hsl(var(--primary))", mr: 1 }} />
-                <Typography variant="h6">Connected Devices</Typography>
-              </Box>
-              <Typography
-                variant="h3"
-                sx={{ fontWeight: 700, color: "hsl(var(--primary))" }}
-              >
-                247
-              </Typography>
-              <Chip
-                label="+12 today"
-                size="small"
-                color="primary"
-                sx={{ mt: 1 }}
-              />
-            </CardContent>
-          </Card>
+          <DeviceCountCard />
         </Grid>
         <Grid size={{ xs: 12, md: 6, lg: 3 }}>
           <Card
