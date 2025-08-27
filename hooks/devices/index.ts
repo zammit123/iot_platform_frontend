@@ -20,9 +20,14 @@ export const useGetDevices = () => {
   } = useQuery<DevicePartial[]>({
     queryKey: [DEVICES_KEY],
     queryFn: async () => {
-      const res = await fetch(`/api/devices`);
-      if (!res.ok) throw new Error("Network response was not ok");
-      return res.json();
+      try {
+        const res = await fetch(`/api/devices`);
+        if (!res.ok) throw new Error("Network response was not ok");
+        return res.json();
+      } catch (error) {
+        console.error("Failed to fetch devices:", error);
+        throw error;
+      }
     },
     select: (data) => {
       if (!data) return [];
@@ -46,9 +51,14 @@ export const useGetDevice = (id: string) => {
   } = useQuery<Device | null>({
     queryKey: [DEVICES_KEY, id],
     queryFn: async () => {
-      const res = await fetch(`/api/devices/${id}`);
-      if (!res.ok) throw new Error("Network response was not ok");
-      return res.json();
+      try {
+        const res = await fetch(`/api/devices/${id}`);
+        if (!res.ok) throw new Error("Network response was not ok");
+        return res.json();
+      } catch (error) {
+        console.error(`Failed to fetch device with id ${id}:`, error);
+        throw error;
+      }
     },
     select: (data) => {
       if (!data) return null;
@@ -78,15 +88,20 @@ export const useCreateDevice = () => {
     // Clear the cache for the devices list
     mutationKey: [DEVICES_KEY],
     mutationFn: async (newDevice: Device) => {
-      const res = await fetch(`/api/devices`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(newDevice),
-      });
-      if (!res.ok) throw new Error("Network response was not ok");
-      return res.json();
+      try {
+        const res = await fetch(`/api/devices`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(newDevice),
+        });
+        if (!res.ok) throw new Error("Network response was not ok");
+        return res.json();
+      } catch (error) {
+        console.error("Failed to create device:", error);
+        throw error;
+      }
     },
     onSuccess: () => {
       // Invalidate the main devices list
@@ -107,15 +122,20 @@ export const useUpdateDevice = (id: string) => {
   } = useMutation({
     mutationKey: [DEVICES_KEY, id],
     mutationFn: async (updatedDevice: Device) => {
-      const res = await fetch(`/api/devices/${id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(updatedDevice),
-      });
-      if (!res.ok) throw new Error("Network response was not ok");
-      return res.json();
+      try {
+        const res = await fetch(`/api/devices/${id}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(updatedDevice),
+        });
+        if (!res.ok) throw new Error("Network response was not ok");
+        return res.json();
+      } catch (error) {
+        console.error(`Failed to update device with id ${id}:`, error);
+        throw error;
+      }
     },
     onSuccess: () => {
       // Invalidate the main devices list
@@ -138,11 +158,16 @@ export const useDeleteDevice = (id?: string) => {
   } = useMutation({
     mutationKey: [DEVICES_KEY, id],
     mutationFn: async () => {
-      const res = await fetch(`/api/devices/${id}`, {
-        method: "DELETE",
-      });
-      if (!res.ok) throw new Error("Network response was not ok");
-      return res.json();
+      try {
+        const res = await fetch(`/api/devices/${id}`, {
+          method: "DELETE",
+        });
+        if (!res.ok) throw new Error("Network response was not ok");
+        return res.json();
+      } catch (error) {
+        console.error(`Failed to delete device with id ${id}:`, error);
+        throw error;
+      }
     },
     onSuccess: () => {
       // Invalidate the main devices list
